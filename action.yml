@@ -1,18 +1,38 @@
 name: 'Tizen CI/CD'
-description: 'Run Tizen commands in github actions. This can build and package tizen applications.'
+description: 'Run Tizen commands in github actions. This builds and packages tizen applications.'
 inputs:
+  type:
+    description: 'Tizen Application Type: (web|native)'
+    required: true
   app-directory:
     description: 'Git location of Tizen application'
     required: true
-    default: '${{ github.workspace }}\tizen'
-  tizen-version:
-    description: 'Version of Tizen CLI to use'
-    default: '4.6'
+    default: 'tizen'
+  cert-pw:
+    description: 'Password used for the cert'
+    required: true
+  cert-name:
+    description: 'Generates a cert file with a specific name'
+    required: false
+    default: 'devcert'
+  zip:
+    description: 'Zip Results for release build'
+    required: false
+    default: 'false'
+  exclusions:
+    description: 'web build exclusions'
+    required: false
+    default: '.build/* .build .sign/* .sign webUnitTest/* webUnitTest .externalToolBuilders/* .externalToolBuilders .buildResult/* .buildResult .settings/* .settings .package/* .package .tproject .project .sdk_delta.info .rds_delta *.wgt .tizen-ui-builder-tool.xml *.zip'
   outputs:
-    zip:
-      description: 'Zip file'
+    file:
+      description: 'File'
   runs:
     using: 'docker'
     image: 'Dockerfile'
     args:
+      - ${{ inputs.type }}
       - ${{ inputs.app-directory }}
+      - ${{ inputs.cert-pw }}
+      - ${{ inputs.cert-name }}
+      - ${{ inputs.exclusions }}
+      - ${{ inputs.zip }}
