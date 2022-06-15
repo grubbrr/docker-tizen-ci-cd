@@ -23,16 +23,16 @@ inputs:
     description: 'web build exclusions'
     required: false
     default: '.build/* .build .sign/* .sign webUnitTest/* webUnitTest .externalToolBuilders/* .externalToolBuilders .buildResult/* .buildResult .settings/* .settings .package/* .package .tproject .project .sdk_delta.info .rds_delta *.wgt .tizen-ui-builder-tool.xml *.zip'
-  outputs:
-    file:
-      description: 'File'
-  runs:
-    using: 'docker'
-    image: 'Dockerfile'
-    args:
-      - ${{ inputs.type }}
-      - ${{ inputs.app-directory }}
-      - ${{ inputs.cert-pw }}
-      - ${{ inputs.cert-name }}
-      - ${{ inputs.exclusions }}
-      - ${{ inputs.zip }}
+outputs:
+  file:
+    description: 'File'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.type }}
+    - ${{ inputs.app-directory }}
+    - ${{ inputs.cert-pw }}
+    - ${{ inputs.cert-name }}
+    - ${{ inputs.exclusions }}
+    - ${{ inputs.zip }}
