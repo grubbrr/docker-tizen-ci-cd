@@ -1,0 +1,18 @@
+name: 'Tizen CI/CD'
+description: 'Run Tizen commands in github actions. This can build and package tizen applications.'
+inputs:
+  app-directory:
+    description: 'Git location of Tizen application'
+    required: true
+    default: '${{ github.workspace }}\tizen'
+  tizen-version:
+    description: 'Version of Tizen CLI to use'
+    default: '4.6'
+  outputs:
+    zip:
+      description: 'Zip file'
+  runs:
+    using: 'docker'
+    image: 'Dockerfile'
+    args:
+      - ${{ inputs.app-directory }}
