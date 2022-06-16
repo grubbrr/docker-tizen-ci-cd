@@ -1,5 +1,7 @@
 #!/bin/sh -l
 
+echo "docker-tizen-ci-cd"
+
 command="$1"
 directory="$2"
 password="$3"
@@ -13,13 +15,13 @@ if [ -z "$password" ]; then
 fi
 
 export DISPLAY=:0.0
-dbus-launch
+dbus-launch > /dev/null
 export $(dbus-launch)
 
-echo "$password" | gnome-keyring-daemon --unlock
+echo "$password" | gnome-keyring-daemon --unlock > /dev/null
 
-tizen certificate -a "$cert_name" -f "$cert_name" -p "$password"
-tizen security-profiles add -n "$cert_name" -a "/home/tizen/tizen-studio-data/keystore/author/$cert_name.p12" -p "$password"
+tizen certificate -a "$cert_name" -f "$cert_name" -p "$password" > /dev/null
+tizen security-profiles add -n "$cert_name" -a "/home/tizen/tizen-studio-data/keystore/author/$cert_name.p12" -p "$password" > /dev/null
 tizen security-profiles set-active -n "$cert_name"
 
 case $command in
@@ -32,6 +34,13 @@ case $command in
         exit 1
         ;;
 esac
+
+if [ "$zip" = "true" ]; then
+    appName=$(sed -rn 's|.*<name>(.+?)</name>.*|\1|p' ${GITHUB_WORKSPACE}/$directory/.buildResult/config.xml)
+    version=$(sed -rn 's|<widget.*?" version="(.+?)" viewmodes.*|\1|p' ${GITHUB_WORKSPACE}/$directory/.buildResult/config.xml)
+    echo $appName $version
+    zip "${GITHUB_WORKSPACE}/$directory/.buildResult/$appName-$version.zip" "${GITHUB_WORKSPACE}/$directory/.buildResult/$appName.wgt"
+fi 
 
 # echo "Hello $1"
 # time=$(date)

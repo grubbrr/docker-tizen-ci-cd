@@ -26,6 +26,7 @@ USER root
 FROM ubuntu:kinetic AS install
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+	zip \
 	gnome-keyring \
 	dbus-x11 && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
