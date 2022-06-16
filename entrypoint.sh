@@ -3,11 +3,12 @@
 echo "docker-tizen-ci-cd"
 
 command="$1"
-directory="$2"
+directory="${GITHUB_WORKSPACE}/$2"
 password="$3"
 cert_name="$4"
 exclusions="$5"
 zip="$6"
+type="$7"
 
 if [ -z "$password" ]; then
     echo "Usage: cert-pw is required"
@@ -26,8 +27,8 @@ tizen security-profiles set-active -n "$cert_name"
 
 case $command in
     web)
-        tizen build-web -e $exclusions -opt -- "${GITHUB_WORKSPACE}/$directory"
-        tizen package -t wgt -s "$cert_name" -- "${GITHUB_WORKSPACE}/$directory/.buildResult" || cat /home/tizen/tizen-studio-data/cli/logs/cli.log
+        tizen build-web -e $exclusions -opt -- "$directory"
+        tizen package -t wgt -s "$cert_name" -- "$directory/.buildResult" || cat /home/tizen/tizen-studio-data/cli/logs/cli.log
         ;;
     *)
         echo "$1 is not implemented yet"
@@ -35,12 +36,32 @@ case $command in
         ;;
 esac
 
+appName=$(sed -rn 's|.*<name>(.+?)</name>.*|\1|p' $directory/.buildResult/config.xml)
+version=$(sed -rn 's|<widget.*?" version="(.+?)" viewmodes.*|\1|p' $directory/.buildResult/config.xml)
+
+wgtFile="$directory/.buildResult/$appName.wgt"
+
 if [ "$zip" = "true" ]; then
-    appName=$(sed -rn 's|.*<name>(.+?)</name>.*|\1|p' ${GITHUB_WORKSPACE}/$directory/.buildResult/config.xml)
-    version=$(sed -rn 's|<widget.*?" version="(.+?)" viewmodes.*|\1|p' ${GITHUB_WORKSPACE}/$directory/.buildResult/config.xml)
     echo $appName $version
-    zip "${GITHUB_WORKSPACE}/$directory/.buildResult/$appName-$version.zip" "${GITHUB_WORKSPACE}/$directory/.buildResult/$appName.wgt"
-fi 
+    zipLocation="$directory/.buildResult/$appName-$version.zip"
+
+    xmlFile="$directory/.buildResult/pkginfo.xml"
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" > $xmlFile
+    echo "<pkg name=\"$appName\" type=\"$type\">" >> $xmlFile
+    echo "    <packagever>$version</packagever>" >> $xmlFile
+    echo "    <app>"
+    echo "        <apptype>order_web</apptype>" >> $xmlFile
+    echo "        <Existence>1</Existence>" >> $xmlFile
+    echo "        <appfile>$appName.wgt</appfile>" >> $xmlFile
+    echo "        <version>$version</version>" >> $xmlFile
+    echo "    </app>" >> $xmlFile
+    echo "</pkg>" >> $xmlFile
+
+    zip -j $zipLocation $wgtFile $xmlFile
+    echo "::set-output name=file::$zipLocation"
+else
+    echo "::set-output name=file::$wgtFile"
+fi
 
 # echo "Hello $1"
 # time=$(date)
