@@ -49,6 +49,8 @@ For local dev updating of the `entrypoint.sh` file in the docker image:
 
 ```sh
 docker image build -t tizen-test . # --no-cache # when changing builder layers
+
+docker run -v "C:\projects\kiosk-v2":"/tizen" -e GITHUB_WORKSPACE="/tizen" --rm tizen-test web tizen pwmustbeLongish cert ".build/* .build .sign/* .sign webUnitTest/* webUnitTest .externalToolBuilders/* .externalToolBuilders .buildResult/* .buildResult .settings/* .settings .package/* .package .tproject .project .sdk_delta.info .rds_delta *.wgt .tizen-ui-builder-tool.xml *.zip"
 ```
 
 ## Reference
