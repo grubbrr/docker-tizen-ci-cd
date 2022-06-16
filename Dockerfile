@@ -30,6 +30,7 @@ ARG T_USER=tizen
 
 COPY --from=builder /home/${T_USER}/tizen-studio/ /home/${T_USER}/tizen-studio/
 ENV PATH="/home/${T_USER}/tizen-studio/tools/ide/bin:{$PATH}"
-COPY entrypoint.sh /entrypoint.sh
+COPY --chmod=777 entrypoint.sh /entrypoint.sh
+# RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
