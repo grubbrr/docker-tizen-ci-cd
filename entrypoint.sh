@@ -22,8 +22,6 @@ tizen certificate -a "$cert_name" -f "$cert_name" -p "$password"
 tizen security-profiles add -n "$cert_name" -a "/home/tizen/tizen-studio-data/keystore/author/$cert_name.p12" -p "$password"
 tizen security-profiles set-active -n "$cert_name"
 
-cat /home/tizen/tizen-studio-data/profile/profiles.xml
-
 case $command in
     web)
         tizen build-web -e $exclusions -opt -- "${GITHUB_WORKSPACE}/$directory"

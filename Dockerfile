@@ -26,39 +26,8 @@ USER root
 FROM ubuntu:kinetic AS install
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-	# acl \
-	# bridge-utils \
-	# cpio \
-	# gettext \
-	# libcanberra-gtk-module \
-	# libcurl3-gnutls \
-	# libsdl1.2debian \
-	# libv4l-0 \
-	# libxcb-render-util0 \
-	# libxcb-randr0 \
-	# libxcb-shape0 \
-	# libxcb-icccm4 \
-	# libxcb-image0 \
-	# libxtst6 \
-	# make \
-	# openvpn \
-	# pciutils \
-	# python2.7 \
-	# qemu-kvm \
-	# rpm2cpio \
-	# sudo \
-	# zenity \
-	# zip \
-	# libncurses5 \
-	# ca-certificates \
-	# libpython2.7 \
-	# unzip \
-	# locales \
 	gnome-keyring \
-	dbus-x11 \
-	# libsecret \
-	# secret-tools \
-	&& \
+	dbus-x11 && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ARG T_USER=tizen
