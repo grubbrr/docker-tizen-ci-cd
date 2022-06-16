@@ -13,7 +13,6 @@ ARG T_VERSION=4.6
 ARG T_BINARY=web-cli_Tizen_Studio_${T_VERSION}_ubuntu-64.bin
     
 ADD --chown=${UID}:${GID} http://download.tizen.org/sdk/Installer/tizen-studio_${T_VERSION}/${T_BINARY} /home/${T_USER}/${T_BINARY}
-
 RUN chmod +x /home/${T_USER}/${T_BINARY}
 
 USER ${T_USER}
@@ -30,7 +29,7 @@ ARG T_USER=tizen
 
 COPY --from=builder /home/${T_USER}/tizen-studio/ /home/${T_USER}/tizen-studio/
 ENV PATH="/home/${T_USER}/tizen-studio/tools/ide/bin:{$PATH}"
-COPY --chmod=777 entrypoint.sh /entrypoint.sh
-# RUN chmod +x /entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
