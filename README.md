@@ -55,6 +55,10 @@ docker run -v "C:\projects\kiosk-v2":"/tizen" -e GITHUB_WORKSPACE="/tizen" --rm 
 
 ## Reference
 
+[dockerhub image vipero07/docker-tizen-ci-cd](https://hub.docker.com/repository/docker/vipero07/docker-tizen-ci-cd)
+
+[ghcr image ghcr.io/vipero07/docker-tizen-ci-cd](https://ghcr.io/vipero07/docker-tizen-ci-cd)
+
 [Docker-tizen-studio-ide](https://github.com/ubergeek77/Docker-tizen-studio-ide)
 
 [Tizen official sdk repository](http://download.tizen.org/sdk/tizenstudio/official/binary/)
