@@ -26,7 +26,10 @@ inputs:
   exclusions:
     description: 'web build exclusions'
     required: false
-    default: '.build/* .build .sign/* .sign webUnitTest/* webUnitTest .externalToolBuilders/* .externalToolBuilders .buildResult/* .buildResult .settings/* .settings .package/* .package .tproject .project .sdk_delta.info .rds_delta *.wgt .tizen-ui-builder-tool.xml *.zip'
+    default: '*.zip'
+  version:
+    description: 'Set the release version - if not this will be pulled from the config file'
+    required: false
 outputs:
   file:
     description: 'File location'
@@ -41,3 +44,4 @@ runs:
     - ${{ inputs.exclusions }}
     - ${{ inputs.zip }}
     - ${{ inputs.type }}
+    - ${{ inputs.version }}

@@ -48,9 +48,9 @@ processors=4 # Makes the WSL 2 VM use two virtual processors
 For local dev updating of the `entrypoint.sh` file in the docker image:
 
 ```sh
-docker image build -t tizen-test . # --no-cache # when changing builder layers
+docker image build -t docker-tizen-ci-cd . # --no-cache # when changing builder layers
 
-docker run -v "C:\projects\kiosk-v2":"/tizen" -e GITHUB_WORKSPACE="/tizen" --rm tizen-test web tizen pwmustbeLongish cert ".build/* .build .sign/* .sign webUnitTest/* webUnitTest .externalToolBuilders/* .externalToolBuilders .buildResult/* .buildResult .settings/* .settings .package/* .package .tproject .project .sdk_delta.info .rds_delta *.wgt .tizen-ui-builder-tool.xml *.zip"
+docker run -v "C:\projects\kiosk-v2":"/tizen" -e GITHUB_WORKSPACE="/tizen" --rm docker-tizen-ci-cd web tizen password cert "*.zip" true Kiosk 1.0.0
 ```
 
 ## Reference

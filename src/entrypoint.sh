@@ -1,6 +1,6 @@
 #!/bin/sh -l
 
-echo "docker-tizen-ci-cd"
+echo "docker-tizen-ci-cd\r\n"
 
 command="$1"
 directory="${GITHUB_WORKSPACE}/$2"
@@ -9,6 +9,19 @@ cert_name="$4"
 exclusions="$5"
 zip="$6"
 type="$7"
+version="$8"
+
+if [ -z "$version" ]; then
+    version=$(sed -rn 's|<widget.*?" version="(.+?)" viewmodes.*|\1|p' "$directory/config.xml")
+else
+    # if we have a version, we need to update it in the config.xml
+    sed -ri "s|(<widget.*?\" version=\").+?(\" viewmodes.*)|\1$version\2|" "$directory/config.xml"
+fi
+
+appName=$(sed -rn 's|.*<name>(.+?)</name>.*|\1|p' "$directory/config.xml")
+
+echo "App name: $appName"
+echo "Version: $version\r\n"
 
 if [ -z "$password" ]; then
     echo "Usage: cert-pw is required"
@@ -36,26 +49,18 @@ case $command in
         ;;
 esac
 
-appName=$(sed -rn 's|.*<name>(.+?)</name>.*|\1|p' $directory/.buildResult/config.xml)
-version=$(sed -rn 's|<widget.*?" version="(.+?)" viewmodes.*|\1|p' $directory/.buildResult/config.xml)
-
 wgtFile="$directory/.buildResult/$appName.wgt"
 
 if [ "$zip" = "true" ]; then
-    echo $appName $version
     zipLocation="$directory/.buildResult/$appName-$version.zip"
 
     xmlFile="$directory/.buildResult/pkginfo.xml"
-    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" > $xmlFile
-    echo "<pkg name=\"$appName\" type=\"$type\">" >> $xmlFile
-    echo "    <packagever>$version</packagever>" >> $xmlFile
-    echo "    <app>"
-    echo "        <apptype>order_web</apptype>" >> $xmlFile
-    echo "        <Existence>1</Existence>" >> $xmlFile
-    echo "        <appfile>$appName.wgt</appfile>" >> $xmlFile
-    echo "        <version>$version</version>" >> $xmlFile
-    echo "    </app>" >> $xmlFile
-    echo "</pkg>" >> $xmlFile
+
+    cp pkginfo.xml "$xmlFile"
+    sed -ri "s|(.*?)%APPNAME%(.*)|\1$appName\2|" "$xmlFile"
+    sed -ri "s|(.*?)%APPVERSION%(.*)|\1$version\2|" "$xmlFile"
+    sed -ri "s|(.*?)%APPTYPE%(.*)|\1$type\2|" "$xmlFile"
+    
 
     zip -j $zipLocation $wgtFile $xmlFile
     echo "::set-output name=file::$zipLocation"

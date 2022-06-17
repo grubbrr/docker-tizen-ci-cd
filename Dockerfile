@@ -35,7 +35,8 @@ ARG T_USER=tizen
 
 COPY --from=builder /home/${T_USER}/tizen-studio/ /home/${T_USER}/tizen-studio/
 ENV PATH="/home/${T_USER}/tizen-studio/tools/ide/bin:{$PATH}"
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY /src/. /
+RUN chmod +x /entrypoint.sh && \
+	chmod +rw /pkginfo.xml
 
 ENTRYPOINT ["/entrypoint.sh"]
