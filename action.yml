@@ -33,9 +33,11 @@ inputs:
 outputs:
   file:
     description: 'File location'
+  zip:
+    description: 'Zip location'
 runs:
   using: 'docker'
-  image: 'docker://ghcr.io/vipero07/docker-tizen-ci-cd:v2.0.0'
+  image: 'docker://ghcr.io/vipero07/docker-tizen-ci-cd:v2.0.1'
   args:
     - ${{ inputs.command }}
     - ${{ inputs.app-directory }}

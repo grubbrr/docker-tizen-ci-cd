@@ -50,9 +50,10 @@ case $command in
 esac
 
 wgtFile="$directory/.buildResult/$appName.wgt"
+echo "::set-output name=file::$2/.buildResult/$appName.wgt"
 
 if [ "$zip" = "true" ]; then
-    zipLocation="$directory/.buildResult/$appName-$version.zip"
+    zipLocation="$directory/.buildResult/$appName.zip"
 
     xmlFile="$directory/.buildResult/pkginfo.xml"
 
@@ -63,11 +64,5 @@ if [ "$zip" = "true" ]; then
     
 
     zip -j $zipLocation $wgtFile $xmlFile
-    echo "::set-output name=file::$zipLocation"
-else
-    echo "::set-output name=file::$wgtFile"
+    echo "::set-output name=zip::$2/.buildResult/$appName.zip"
 fi
-
-# echo "Hello $1"
-# time=$(date)
-# echo "::set-output name=file::$time"
