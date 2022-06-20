@@ -56,10 +56,23 @@ if [ "$zip" = "true" ]; then
     zipLocation="$directory/.buildResult/$appName.zip"
 
     xmlFile="$directory/.buildResult/pkginfo.xml"
-    cp "$PWD"/pkginfo.xml "$xmlFile"
-    sed -ri "s|(.*?)%APPNAME%(.*)|\1$appName\2|" "$xmlFile"
-    sed -ri "s|(.*?)%APPVERSION%(.*)|\1$version\2|" "$xmlFile"
-    sed -ri "s|(.*?)%APPTYPE%(.*)|\1$type\2|" "$xmlFile"
+    
+    # cp "$PWD"/pkginfo.xml "$xmlFile"
+
+    # sed -ri "s|(.*?)%APPNAME%(.*)|\1$appName\2|" "$xmlFile"
+    # sed -ri "s|(.*?)%APPVERSION%(.*)|\1$version\2|" "$xmlFile"
+    # sed -ri "s|(.*?)%APPTYPE%(.*)|\1$type\2|" "$xmlFile"
+
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" > $xmlFile
+    echo "<pkg name=\"$appName\" type=\"$type\">" >> $xmlFile
+    echo "    <packagever>$version</packagever>" >> $xmlFile
+    echo "    <app>"
+    echo "        <apptype>order_web</apptype>" >> $xmlFile
+    echo "        <Existence>1</Existence>" >> $xmlFile
+    echo "        <appfile>$appName.wgt</appfile>" >> $xmlFile
+    echo "        <version>$version</version>" >> $xmlFile
+    echo "    </app>" >> $xmlFile
+    echo "</pkg>" >> $xmlFile
     
 
     zip -j $zipLocation "$wgtFile" "$xmlFile"

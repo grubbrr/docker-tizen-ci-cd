@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
         - name: Create Package
-        uses: grubbrr/docker-tizen-ci-cd@v2.0.8
+        uses: grubbrr/docker-tizen-ci-cd@v2.0.9
         with:
             command: web
             app-directory: tizen
