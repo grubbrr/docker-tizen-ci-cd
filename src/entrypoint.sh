@@ -40,7 +40,7 @@ tizen security-profiles set-active -n "$cert_name"
 
 case $command in
     web)
-        tizen build-web -e $exclusions -opt -- "$directory"
+        tizen build-web -e $exclusions -- "$directory"
         tizen package -t wgt -s "$cert_name" -- "$directory/.buildResult" || cat /home/tizen/tizen-studio-data/cli/logs/cli.log
         ;;
     *)
