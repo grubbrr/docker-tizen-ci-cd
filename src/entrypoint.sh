@@ -70,7 +70,7 @@ if [ "$zip" = "true" ]; then
     echo "        <apptype>order_web</apptype>" >> $xmlFile
     echo "        <Existence>1</Existence>" >> $xmlFile
     echo "        <appfile>$appName.wgt</appfile>" >> $xmlFile
-    echo "        <version>$version</version>" >> $xmlFile
+    echo "        <version>15</version>" >> $xmlFile
     echo "    </app>" >> $xmlFile
     echo "</pkg>" >> $xmlFile
     
