@@ -66,7 +66,7 @@ if [ "$zip" = "true" ]; then
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" > $xmlFile
     echo "<pkg name=\"$appName\" type=\"$type\">" >> $xmlFile
     echo "    <packagever>$version</packagever>" >> $xmlFile
-    echo "    <app>"
+    echo "    <app>" >> $xmlFile
     echo "        <apptype>order_web</apptype>" >> $xmlFile
     echo "        <Existence>1</Existence>" >> $xmlFile
     echo "        <appfile>$appName.wgt</appfile>" >> $xmlFile
