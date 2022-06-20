@@ -57,7 +57,7 @@ if [ "$zip" = "true" ]; then
 
     xmlFile="$directory/.buildResult/pkginfo.xml"
 
-    cp pkginfo.xml "$xmlFile"
+    cp ./pkginfo.xml "$xmlFile"
     sed -ri "s|(.*?)%APPNAME%(.*)|\1$appName\2|" "$xmlFile"
     sed -ri "s|(.*?)%APPVERSION%(.*)|\1$version\2|" "$xmlFile"
     sed -ri "s|(.*?)%APPTYPE%(.*)|\1$type\2|" "$xmlFile"

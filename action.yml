@@ -37,7 +37,7 @@ outputs:
     description: 'Zip location'
 runs:
   using: 'docker'
-  image: 'docker://ghcr.io/vipero07/docker-tizen-ci-cd:v2.0.1'
+  image: 'docker://ghcr.io/vipero07/docker-tizen-ci-cd:v2.0.5'
   args:
     - ${{ inputs.command }}
     - ${{ inputs.app-directory }}
