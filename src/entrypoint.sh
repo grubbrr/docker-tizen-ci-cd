@@ -56,13 +56,13 @@ if [ "$zip" = "true" ]; then
     zipLocation="$directory/.buildResult/$appName.zip"
 
     xmlFile="$directory/.buildResult/pkginfo.xml"
-
-    cp ./pkginfo.xml "$xmlFile"
+    SCRIPT_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
+    cp "$SCRIPT_DIR"/pkginfo.xml "$xmlFile"
     sed -ri "s|(.*?)%APPNAME%(.*)|\1$appName\2|" "$xmlFile"
     sed -ri "s|(.*?)%APPVERSION%(.*)|\1$version\2|" "$xmlFile"
     sed -ri "s|(.*?)%APPTYPE%(.*)|\1$type\2|" "$xmlFile"
     
 
-    zip -j $zipLocation $wgtFile $xmlFile
+    zip -j $zipLocation "$wgtFile" "$xmlFile"
     echo "::set-output name=zip::$2/.buildResult/$appName.zip"
 fi
