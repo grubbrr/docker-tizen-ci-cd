@@ -9,7 +9,7 @@ cert_name="$4"
 exclusions="$5"
 zip="$6"
 type="$7"
-version="$8"
+version="$(echo $8 | sed 's|[^0-9\.]*||g')"  # "$8"
 
 if [ -z "$version" ]; then
     version=$(sed -rn 's|<widget.*?" version="(.+?)" viewmodes.*|\1|p' "$directory/config.xml")
