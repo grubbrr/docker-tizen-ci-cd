@@ -10,11 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
         - name: Create Package
-        uses: grubbrr/docker-tizen-ci-cd@v2.1.3
+        uses: grubbrr/docker-tizen-ci-cd@v2.1.5
         with:
             command: web
             app-directory: tizen
             cert-pw: ${{ secrets.tizen_cert_pw }}
+            dist-cert: fromWorkspaceRoot/dist_cert_path.p12
+            dist-cert-pw: ${{ secrets.tizen_dist_cert_pw }}
             zip: true
             version: 1.0.1
         - name: Release
@@ -39,6 +41,18 @@ jobs:
 ### `cert-pw`
 
 **Required** a password to use for the certificate that the package will be signed with. Use Github secrets.
+
+### `dist-cert`
+
+**Required** the location of a distribution certificate to use with the generated certificate.
+
+> only required because the current cert shipped with tizen no longer works
+
+### `dist-cert-pw`
+
+**Required** the password for the distribution certificate.
+
+> only required because the current cert shipped with tizen no longer works, otherwise only required if dist-cert is set
 
 ### `cert-name`
 
@@ -93,7 +107,11 @@ For local dev updating of the `entrypoint.sh` file in the docker image:
 ```sh
 docker image build -t docker-tizen-ci-cd . # --no-cache # when changing builder layers
 
-docker run -v "C:\projects\kiosk-v2":"/tizen" -e GITHUB_WORKSPACE="/tizen" --rm docker-tizen-ci-cd web tizen password cert "*.zip" true Kiosk 1.0.0
+docker run -v "C:\projects\kiosk-v2":"/tizen" -e GITHUB_WORKSPACE="/tizen" --rm docker-tizen-ci-cd web tizen password "somePath/dist-cert.p12" "distPassword" cert "*.zip" true Kiosk 1.0.0
+```
+
+```sh
+docker build -t docker-tizen-ci-cd -t docker-tizen-ci-cd:latest -t vipero07/docker-tizen-ci-cd:latest -t vipero07/docker-tizen-ci-cd:v2.1.5 -t ghcr.io/grubbrr/docker-tizen-ci-cd:latest -t ghcr.io/grubbrr/docker-tizen-ci-cd:v2.1.5 -t ghcr.io/vipero07/docker-tizen-ci-cd:latest -t ghcr.io/vipero07/docker-tizen-ci-cd:v2.1.5 .; docker push vipero07/docker-tizen-ci-cd:latest; docker push ghcr.io/grubbrr/docker-tizen-ci-cd:latest; docker push ghcr.io/vipero07/docker-tizen-ci-cd:latest; docker push vipero07/docker-tizen-ci-cd:v2.1.5; docker push ghcr.io/grubbrr/docker-tizen-ci-cd:v2.1.5; docker push ghcr.io/vipero07/docker-tizen-ci-cd:v2.1.5;
 ```
 
 ## Reference

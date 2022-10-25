@@ -11,6 +11,12 @@ inputs:
   cert-pw:
     description: 'Password used for the cert'
     required: true
+  dist-cert:
+    description: 'location to the distribution certification from the github workspace'
+    required: true
+  dist-cert-pw:
+    description: 'Password used for the distribution cert'
+    required: true
   cert-name:
     description: 'Generates a cert file with a specific name'
     required: false
@@ -42,6 +48,8 @@ runs:
     - ${{ inputs.command }}
     - ${{ inputs.app-directory }}
     - ${{ inputs.cert-pw }}
+    - ${{ inputs.dist-cert }}
+    - ${{ inputs.dist-cert-pw }}
     - ${{ inputs.cert-name }}
     - ${{ inputs.exclusions }}
     - ${{ inputs.zip }}

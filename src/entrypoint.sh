@@ -5,11 +5,14 @@ echo "docker-tizen-ci-cd\r\n"
 command="$1"
 directory="${GITHUB_WORKSPACE}/$2"
 password="$3"
-cert_name="$4"
-exclusions="$5"
-zip="$6"
-type="$7"
-version="$(echo $8 | sed 's|[^0-9\.]*||g')"  # "$8"
+dist_cert="${GITHUB_WORKSPACE}/$4"
+dist_cert_pw="$5"
+cert_name="$6"
+exclusions="$7"
+zip="$8"
+type="$9"
+version="$(echo ${10} | sed 's|[^0-9\.]*||g')"
+
 
 if [ -z "$version" ]; then
     version=$(sed -rn 's|<widget.*?" version="(.+?)" viewmodes.*|\1|p' "$directory/config.xml")
@@ -35,7 +38,14 @@ export $(dbus-launch)
 echo "$password" | gnome-keyring-daemon --unlock > /dev/null
 
 tizen certificate -a "$cert_name" -f "$cert_name" -p "$password" > /dev/null
-tizen security-profiles add -n "$cert_name" -a "/home/tizen/tizen-studio-data/keystore/author/$cert_name.p12" -p "$password" > /dev/null
+
+if [ -z "$dist_cert_pw" ]; then
+    tizen security-profiles add -n "$cert_name" -a "/home/tizen/tizen-studio-data/keystore/author/$cert_name.p12" -p "$password" > /dev/null
+else
+    echo "Using Dist Cert"
+    tizen security-profiles add -n "$cert_name" -a "/home/tizen/tizen-studio-data/keystore/author/$cert_name.p12" -p "$password" --dist "$dist_cert" --dist-password "$dist_cert_pw" > /dev/null
+fi
+
 tizen security-profiles set-active -n "$cert_name"
 
 case $command in
