@@ -43,7 +43,7 @@ if [ -z "$dist_cert_pw" ]; then
     tizen security-profiles add -n "$cert_name" -a "/home/tizen/tizen-studio-data/keystore/author/$cert_name.p12" -p "$password" > /dev/null
 else
     echo "Using Dist Cert"
-    tizen security-profiles add -n "$cert_name" -a "/home/tizen/tizen-studio-data/keystore/author/$cert_name.p12" -p "$password" --dist "$dist_cert" --dist-password "$dist_cert_pw" > /dev/null
+    tizen security-profiles add -n "$cert_name" -a "/home/tizen/tizen-studio-data/keystore/author/$cert_name.p12" -p "$password" --dist "$dist_cert" --dist-password "$dist_cert_pw"
 fi
 
 tizen security-profiles set-active -n "$cert_name"
